@@ -1,0 +1,27 @@
+// find the neariest poistion  between square and the circle 
+//dx^2 +dy^2 < r^2 
+
+
+class Solution {
+public:
+    bool checkOverlap(int radius, int h, int k, int x1, int y1, int x2, int y2) {
+        // postion of the circle 
+        int dx, dy;
+        if(x1>h){// on the right
+        dx=x1;//nearest 
+        }else if(x2<h){//on the left
+        dx=x2;
+        }else{
+            dx=h;
+        }
+        // for y coridnate
+
+        if(y1>h){
+            dy=y1;
+        }else if(y2<h) dy=y2;
+        else dy=k;
+        //neariest point and the circele is leas the radius so false
+        return (h-dx)* (h-dx) + (k-dy)*(k-dy)<= radius*radius;
+        
+    }
+};
