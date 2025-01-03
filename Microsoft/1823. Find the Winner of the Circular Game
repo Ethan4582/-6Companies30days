@@ -1,0 +1,60 @@
+
+ // Time complexity: O(n^2), Space complexity: O(n)
+
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        vector<int> num(n); // Initialize vector with size n
+        for(int i = 0; i < n; i++) { // Fix index to start from 0
+            num[i] = i + 1; // Fill vector with values from 1 to n
+        }
+
+        int stridx = 0; 
+        while(num.size() > 1) {
+            int curridx = (stridx + k - 1) % num.size(); // Find index to remove
+            num.erase(num.begin() + curridx); // Remove the element
+            stridx = curridx; // Update starting index
+        }
+        return num.front(); // Return the last remaining element
+    }
+};
+
+
+Time Complexity: O(n⋅k)
+Space Complexity: O(n)
+
+
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        queue<int> q; 
+        for( int i =1; i <=n; i++){
+            q.push(i);
+        }
+        //implmnet circle with queue
+        while(q.size()>1){
+            //ad k-1 elment at the back 
+            for(int i =0 ;i <k-1; i++){
+                q.push(q.front());
+                q.pop();
+            }
+            // remove th ek elment 
+            q.pop();
+        }
+        return q.front();
+    }
+};
+
+
+
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        int ans = 0;
+        for (int i = 2; i <= n; i++) {
+            ans = (ans + k) % i;
+        }
+        // add 1 to convert back to 1 indexing
+        return ans + 1;
+    }
+};

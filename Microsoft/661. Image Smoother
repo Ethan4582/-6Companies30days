@@ -1,0 +1,81 @@
+
+
+Brute force  
+
+
+class Solution {
+public:
+    vector<vector<int>> imageSmoother(vector<vector<int>>& img) {
+        int m = img.size();
+        int n = img[0].size();
+
+        vector<vector<int>> ans(m, vector<int>(n)); 
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                int sum = 0;
+                int count = 0;
+                for(int x = i - 1; x <= i + 1; x++) {
+                    for(int y = j - 1; y <= j + 1; y++) {
+                        if(0 <= x && x < m && 0 <= y && y < n) { 
+                            sum += img[x][y]; 
+                            count++; 
+                        }
+                    }
+                }
+
+                ans[i][j] = sum / count; 
+            }
+        }
+        return ans;
+    }
+}; // Time complexity: O(m * n), Space complexity: O(m * n)
+
+
+
+///-----------------------Bit maniupulation 
+
+as we see the limit is 255 which  is 2^8-1  we can  use this 8 to store tthe current number and then avg of neighbour in remin in front of space as it 32 bit number currently is only use 8 bit then for avg we just shift 8 bit 
+
+
+
+
+class Solution {
+public:
+    vector<vector<int>> imageSmoother(vector<vector<int>>& img) {
+        int m = img.size();
+        int n = img[0].size();
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int sum = 0, count = 0;
+
+                // Iterate through the 3x3 neighborhood
+                for (int x = i - 1; x <= i + 1; x++) {
+                    for (int y = j - 1; y <= j + 1; y++) {
+                        if (0 <= x && x < m && 0 <= y && y < n) {
+                            // 101 1111 1111  to get the front 8 bits. The front will always be greater than 255 in binary.
+                            // Thus, we use num % 256 to get the original num.
+                            sum += img[x][y] & 255; // Extract only the original portion of the value.
+                            count++;
+                        }
+                    }
+                }
+
+                // 000 1111 1111 XOR 101 0000 0000
+                img[i][j] |= (sum / count) << 8; // Shift the smoothed value 8 bits to the left and encode it in the current value.
+            }
+        }
+
+        // Extract the smoothed values from the encoded array
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                img[i][j] >>= 8; // Shift right by 8 bits to get the smoothed value.
+            }
+        }
+
+        return img;
+    }
+};
+
+

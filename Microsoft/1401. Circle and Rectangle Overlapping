@@ -2,6 +2,7 @@
 //dx^2 +dy^2 < r^2 
 
 
+
 class Solution {
 public:
     bool checkOverlap(int radius, int h, int k, int x1, int y1, int x2, int y2) {
@@ -16,12 +17,13 @@ public:
         }
         // for y coridnate
 
-        if(y1>h){
+        if(y1>k){
             dy=y1;
-        }else if(y2<h) dy=y2;
+        }else if(y2<k) dy=y2;
         else dy=k;
         //neariest point and the circele is leas the radius so false
         return (h-dx)* (h-dx) + (k-dy)*(k-dy)<= radius*radius;
         
     }
 };
+

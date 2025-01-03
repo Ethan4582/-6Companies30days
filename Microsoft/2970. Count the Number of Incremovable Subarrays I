@@ -1,0 +1,118 @@
+
+// Brute force   TC-0(n^3)
+ 
+class Solution {
+public:
+    int incremovableSubarrayCount(vector<int>& nums) {
+        int n = nums.size(); 
+        int ans = 0;
+
+        // Iterate over all possible subarrays
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                // Check if the left part is strictly increasing
+                bool valL = true;
+                for (int p = 0; p < i - 1; p++) {
+                    if (nums[p] >= nums[p + 1]) {
+                        valL = false;
+                        break;
+                    }
+                }
+
+                // Check if the right part is strictly increasing
+                bool valR = true;
+                for (int s = j + 1; s < n - 1; s++) {
+                    if (nums[s] >= nums[s + 1]) {
+                        valR = false;
+                        break;
+                    }
+                }
+
+                // If both sides are increasing and boundaries are valid
+                if (valL && valR && (i == 0 || j == n - 1 || nums[i - 1] < nums[j + 1])) {
+                    ans++;
+                }
+            }
+        }
+
+        return ans;
+    }
+};
+
+
+
+----------------------- Optmize -----------------------------------
+
+TC-0(n^2)
+check for the last l  and then same for first right that valid if true cnt 
+
+
+class Solution {
+public:
+    int incremovableSubarrayCount(vector<int>& nums) {
+        int n = nums.size();
+        int ans = 0;
+        
+        // Precompute left increasing array validity
+        vector<bool> leftValid(n + 1, true);  // +1 for empty left part
+        for (int i = 1; i < n; i++) {
+            leftValid[i + 1] = leftValid[i] && (nums[i-1] < nums[i]);
+        }
+        
+        // Precompute right increasing array validity
+        vector<bool> rightValid(n + 1, true);  // +1 for empty right part
+        for (int i = n - 2; i >= 0; i--) {
+            rightValid[i] = rightValid[i + 1] && (nums[i] < nums[i + 1]);
+        }
+        
+        // Check all possible subarrays
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                // For subarray [i,j], check if remaining array parts form increasing sequence
+                bool isValid = leftValid[i] && rightValid[j + 1];
+                
+                // Check boundary condition if needed
+                if (i > 0 && j < n - 1) {
+                    isValid = isValid && (nums[i - 1] < nums[j + 1]);
+                }
+                
+                if (isValid) ans++;
+            }
+        }
+        
+        return ans;
+    }
+};
+
+
+------------------------------------ Most Optmize ------------------------  
+
+instead of going to all the num we jsut go till maxl and minRidx that are valid 
+
+ res+= n- rightValid+1
+
+
+ class Solution {
+public:
+    long long incremovableSubarrayCount(vector<int>& nums) {
+         int n = nums.size();
+        int left = 0, right = n - 1;
+
+        // Find the boundaries for valid incres
+        while (left + 1 < n && nums[left] < nums[left + 1]) 
+            left++;
+        while (right > 0 && nums[right - 1] < nums[right]) 
+            right--;
+            // fi strictky increasing 
+         long long  ans = (left == n-1)? 0 : 1 + (n - right);
+        
+        // Count subarrays starting before or at `left`
+        for (int i = 0; i <= left; i++) {
+            // valid str from where overlap the valid increase subaary 
+            int valid_start = upper_bound(nums.begin() + right, nums.end(), nums[i]) - nums.begin();
+            ans += (n - valid_start + 1);
+        }
+
+        return ans;
+    }
+};
