@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int f(int i,int k,int dnjmp,int jump, 
+        unordered_map<int,unordered_map<int,unordered_map<int,int>>>&dp)
+    {
+        if(i>k+1)   return 0;
+        if(dp.count(i) && dp[i].count(dnjmp) && dp[i][dnjmp].count(jump))
+        {
+            return dp[i][dnjmp][jump];
+        }
+        int ans=(i==k);
+        ans+=f(i+pow(2,jump),k,0,jump+1,dp);
+        if(i!=0 && !dnjmp)
+        {
+            ans+=f(i-1,k,1,jump,dp);
+        }
+        return dp[i][dnjmp][jump]=ans;
+    }
+    int waysToReachStair(int k) {
+        unordered_map<int,unordered_map<int,unordered_map<int,int>>>mp;
+        int ans=f(1,k,0,0,mp);
+        return ans;
+    }
+};

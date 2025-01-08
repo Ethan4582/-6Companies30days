@@ -1,0 +1,16 @@
+
+// Time: O(log_26^N)
+// Space: O(1) extra space
+class Solution {
+public:
+    string convertToTitle(int n) {
+        string ans;
+        while (n) {
+            n--;
+            ans += 'A' + n % 26;
+            n /= 26;
+        }
+        reverse(begin(ans), end(ans));
+        return ans;
+    }
+};

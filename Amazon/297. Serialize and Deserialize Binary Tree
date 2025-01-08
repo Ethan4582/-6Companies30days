@@ -1,0 +1,38 @@
+class Codec {
+public:
+// we can use any BFS/DFS 
+    void serializeDFS(TreeNode* root, string &ans) {
+        if (!root) {
+            ans += "#,"; // Use # for null
+            return;
+        }
+        ans += to_string(root->val) + ','; // Add node value
+        serializeDFS(root->left, ans); // Traverse left
+        serializeDFS(root->right, ans); // Traverse right
+    }
+
+    string serialize(TreeNode* root) {
+        string ans = "";
+        serializeDFS(root, ans); // Start DFS
+        return ans;
+    }
+
+    TreeNode* deserializeDFS(stringstream &s) {
+        string str;
+        getline(s, str, ','); // Read next value
+        if (str == "#") return NULL; // Return NULL for #
+        TreeNode* node = new TreeNode(stoi(str)); // Create node
+        node->left = deserializeDFS(s); // Deserialize left
+        node->right = deserializeDFS(s); // Deserialize right
+        return node;
+    }
+
+    TreeNode* deserialize(string data) {
+        if (data.size() == 0) return NULL;
+        stringstream s(data);
+        return deserializeDFS(s); // Start DFS
+    }
+};
+
+// Time Complexity: O(n)
+// Space Complexity: O(n)
