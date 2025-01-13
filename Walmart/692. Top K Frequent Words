@@ -1,0 +1,26 @@
+
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string, int> mpp; 
+        for (const string& word : words) {
+            mpp[word]++;
+        } 
+        
+        vector<pair<string, int>> sortedMap(mpp.begin(), mpp.end());
+        
+        sort(sortedMap.begin(), sortedMap.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
+            if (a.second == b.second) {
+                return a.first < b.first; 
+            }
+            return a.second > b.second; 
+        });
+
+        vector<string> ans; 
+        for (int i = 0; i < k && i < sortedMap.size(); i++) {
+            ans.push_back(sortedMap[i].first);
+        }
+
+        return ans; 
+    }
+};

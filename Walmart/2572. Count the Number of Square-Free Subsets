@@ -1,0 +1,73 @@
+class Solution {
+public:
+long long mod;
+    long long rec(int ind,vector<int>&arr,int cur,map<int,int>&mp,vector<vector<long long>>&dp)
+    {
+        if (ind==arr.size()) 
+        {
+            return 1;
+        }
+        if (dp[ind][cur]!=-1) return dp[ind][cur];
+        long long pick=0;
+        if ((mp[arr[ind]]&cur)==0)
+        {
+            pick=rec(ind+1,arr,cur|(mp[arr[ind]]),mp,dp);
+        }
+        long long npc=rec(ind+1,arr,cur,mp,dp);
+        return dp[ind][cur]=(pick+npc)%mod;
+        
+    }
+    int primeFactors(int n)
+{
+    int number=n;
+    int temp=0;
+    while (n%2 == 0)
+    {
+       temp|=(1<<2);
+        n = n/2;
+    }
+ 
+    for (int i = 3; i*i <= n; i = i+2)
+    {
+        while (n%i == 0)
+        {
+            temp|=(1<<i);
+            n = n/i;
+        }
+    }
+    if (n > 2)
+       temp|=(1<<n);
+       return temp;
+}
+    int squareFreeSubsets(vector<int>& arr) {
+        vector<int>v;
+        mod=1e9+7;
+         int cnt1=0;
+        for (int i=0;i<arr.size();i++)
+        {
+           
+            if (arr[i]%4==0 || arr[i]%9==0 || arr[i]%25==0) continue;
+            v.push_back(arr[i]);
+        }
+        map<int,int>mp;
+        vector<vector<long long>>dp(v.size(),vector<long long>(1024,-1));
+       vector<int>arr={2,3,5,7,11,13,17,19,23,29};
+        for (int i=0;i<v.size();i++)
+        {
+             int temp=primeFactors(v[i]);
+             int c=0;
+             for (int i=0;i<arr.size();i++)
+             {
+                 if ((temp&(1<<arr[i]))!=0) c|=(1<<i);
+             }
+
+             mp[v[i]]=c;
+        }
+        mp[1]=0;
+        int cur=0;
+        long long ans=rec(0,v,cur,mp,dp);
+        
+        return( ans-1+mod)%mod;
+
+    }
+};

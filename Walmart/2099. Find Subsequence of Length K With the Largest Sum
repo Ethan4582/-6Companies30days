@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> maxSubsequence(vector<int>& a, int k) {
+        int n = a.size();
+        
+        vector<pair<int, int>> pr;
+        for (int i = 0; i < n; ++i) {
+            pr.push_back({a[i], i});
+        }
+        
+        sort(pr.rbegin(), pr.rend());
+        
+        vector<pair<int, int>> tp_k(pr.begin(), pr.begin() + k);
+        
+        sort(tp_k.begin(), tp_k.end(), [](const pair<int, int>& p1, const pair<int, int>& p2) {
+            return p1.second < p2.second;
+        });
+        
+        vector<int> ans;
+        for (const auto& p : tp_k) {
+            ans.push_back(p.first);
+        }
+        
+        return ans;
+    }
+};
