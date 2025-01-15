@@ -1,0 +1,65 @@
+class Solution {
+public:
+    struct trie{
+        trie * links[26];
+        bool flag = false;
+        bool cnat(char c)
+        {
+            return links[c-'a']!=NULL;
+        }
+    };
+    trie * root;
+    void insert(string s)
+    {
+        trie * node = root;
+        for(int i=0;i<s.length();i++)
+        {
+            if(!node->cnat(s[i]))
+            {
+                node->links[s[i]-'a']=new trie();
+                
+            }
+            node = node->links[s[i]-'a'];
+        }
+        node->flag=true;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) 
+    {
+        int n= s.length();
+        root = new trie();
+        for(int i=0;i<wordDict.size();i++)
+        {
+            insert(wordDict[i]);
+        }
+        queue<int>q;
+        q.push(0);
+        vector<int>vis(s.size(),0);
+        while(!q.empty())
+        {
+            int k=q.size();
+            for(int i=0;i<k;i++)
+            {
+                int index=q.front();
+                q.pop();
+                if(vis[index])continue;
+                vis[index] = 1;
+                trie * node = root;
+                // cout << index << " ";
+                while(index<n && node->cnat(s[index]))
+                {
+                    // cout << node->flag << endl;
+
+                    node=node->links[s[index]-'a'];
+                    if(node->flag)
+                    {
+                        q.push(index+1);
+                    }
+                    index++;
+                }
+                if(index==n and node->flag)
+                {return true;}
+            }
+        }
+        return false;
+    }
+};
