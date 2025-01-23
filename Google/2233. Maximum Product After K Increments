@@ -1,0 +1,19 @@
+// Time: O(NlogN)
+// Space: O(N)
+class Solution {
+public:
+    int maximumProduct(vector<int>& A, int k) {
+        long mod = 1e9 + 7, ans = 1;
+        priority_queue<int, vector<int>, greater<>> pq(begin(A), end(A));
+        while (k--) {
+            int u = pq.top(), d = 1;
+            pq.pop();
+            pq.push(u + 1);
+        }
+        while (pq.size()) {
+            ans = ans * pq.top() % mod;
+            pq.pop();
+        }
+        return ans;
+    }
+};

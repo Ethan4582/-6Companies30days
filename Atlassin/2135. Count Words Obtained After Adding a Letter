@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int wordCount(vector<string>& strt, vector<string>& trg) {
+        
+        for (int i = 0; i < strt.size(); i++) {
+            sort(strt[i].begin(), strt[i].end());    
+        }
+        sort(strt.begin(), strt.end());
+        int count = 0;
+        for (int i = 0; i < trg.size(); i++) {
+            string s = trg[i];
+            for (int j = 0; j < s.length(); j++) {
+                string str = s;
+                str.erase(str.begin() + j);
+                sort(str.begin(), str.end());
+                if (binary_search(strt.begin(), strt.end(), str)) {
+                    count++;
+                    break;
+                }
+            }
+        }
+        
+        return count;
+    }
+};

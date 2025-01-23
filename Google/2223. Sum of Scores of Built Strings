@@ -1,0 +1,18 @@
+// Time: O(N)
+// Space: O(N)
+class Solution {
+public:
+    long long sumScores(string s) {
+        long long N = s.size(), j = 0, ans = 0;
+        vector<int> lps(N), cnt(N, 1);
+        for (int i = 1; i < N; ++i) {
+            while (j > 0 && s[i] != s[j]) j = lps[j - 1];
+            j += s[i] == s[j];
+            lps[i] = j;
+        }
+        for (int i = 0; i < N; ++i) {
+            if (lps[i]) cnt[i] += cnt[lps[i] - 1];
+        }
+        return accumulate(begin(cnt), end(cnt), 0LL);
+    }
+};

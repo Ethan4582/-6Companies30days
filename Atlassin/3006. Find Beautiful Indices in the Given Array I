@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> beautifulIndices(string s, string a, string b, int k) {
+        if (a.length()>s.length() || b.length()>s.length()) return {};
+        int n = s.length();
+        vector<int> allJ;
+        
+        for (int j=0; j<n-b.length()+1; ++j) {
+            if(s.substr(j, b.length()) == b) {
+                allJ.push_back(j);
+            }
+        }
+
+        if (allJ.empty()) return {};
+        int jIndex = 0;
+        vector<int> ans;
+        
+        for (int i=0; i<n-a.length()+1; ++i) {
+            if (jIndex<allJ.size()-1 && allJ[jIndex]<i) ++jIndex;
+            if(s.substr(i, a.length()) == a) {
+                if (abs(i-allJ[jIndex])<=k || (jIndex>0 && abs(i-allJ[jIndex-1])<=k)) {
+                    ans.push_back(i);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};

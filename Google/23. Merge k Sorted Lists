@@ -1,0 +1,79 @@
+
+class compare {
+public:
+    bool operator()(ListNode* a, ListNode* b) {
+        return a->val > b->val; 
+    }
+};
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& ls) {
+        if (ls.empty()) return NULL;
+
+      
+        ListNode* dummy = new ListNode(0);
+        ListNode* tail = dummy; 
+
+    
+        priority_queue<ListNode*, vector<ListNode*>, compare> pq; 
+        for (ListNode* head : ls) {
+            if (head != NULL) {
+                pq.push(head);
+            }
+        }
+
+        while (!pq.empty()) {
+            ListNode* minNode = pq.top();
+            pq.pop(); 
+            tail->next = minNode; 
+            tail = tail->next; // Move the pointer
+
+            if (minNode->next) { // If not null, then add the next element 
+class compare {
+public:
+    bool operator()(ListNode* a, ListNode* b) {
+        return a->val > b->val; 
+    }
+};
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& ls) {
+        if (ls.empty()) return NULL;
+
+      
+        ListNode* dummy = new ListNode(0);
+        ListNode* tail = dummy; 
+
+    
+        priority_queue<ListNode*, vector<ListNode*>, compare> pq; 
+        for (ListNode* head : ls) {
+            if (head != NULL) {
+                pq.push(head);
+            }
+        }
+
+        while (!pq.empty()) {
+            ListNode* minNode = pq.top();
+            pq.pop(); 
+            tail->next = minNode; 
+            tail = tail->next; // Move the pointer
+
+            if (minNode->next) { // If not null, then add the next element 
+                pq.push(minNode->next);
+            }
+        }
+        
+       
+        return dummy->next;
+    }
+};
+                pq.push(minNode->next);
+            }
+        }
+        
+       
+        return dummy->next;
+    }
+};

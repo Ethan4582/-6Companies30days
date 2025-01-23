@@ -1,0 +1,32 @@
+struct Person {
+    string name;
+    vector<Person*> child;
+    bool alv = true;
+};
+class ThroneInheritance {
+    Person *k = new Person();
+    unordered_map<string, Person*> m;
+    void dfs(Person *p, vector<string> &ans) {
+        if (p->alv) ans.push_back(p->name);
+        for (auto & c : p->child) dfs(c, ans);
+    }
+public:
+    ThroneInheritance(string kingName) {
+        k->name = kingName;
+        m[kingName] = k;
+    }
+    void birth(string prntnam, string childnam) {
+        auto c = new Person();
+        c->name = childnam;
+        m[prntnam]->child.push_back(c);
+        m[childnam] = c;
+    }
+    void death(string name) {
+        m[name]->alv = false;
+    }
+    vector<string> getInheritanceOrder() {
+        vector<string> ans;
+        dfs(k, ans);
+        return ans;
+    }
+};

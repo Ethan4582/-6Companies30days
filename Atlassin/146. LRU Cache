@@ -1,0 +1,37 @@
+class LRUCache {
+    int capacity;
+    typedef pair<int, int> Node;
+    list<Node> data;
+    typedef list<Node>::iterator Iterator;
+    unordered_map<int, Iterator> m;
+    void moveToFront(int key) {
+        auto node = m[key];
+        data.splice(data.begin(), data, node);
+        m[key] = data.begin();
+    }
+public:
+    LRUCache(int capacity) : capacity(capacity) {}
+    int get(int key) {
+        // get node given key, put the node at the beginning of the list, return the value in the node
+        if (m.count(key)) {
+            moveToFront(key);
+            return m[key]->second;
+        }
+        return -1;
+    }
+    void put(int key, int value) {
+        // if key exists in the map, get node given key, put the node at the beginning of the list and update the value in the node
+        // otherwise, put a new node at the beginning of the list with the <key, value> and update the map. If capacity exceeded, remove the last node from the list and map.
+        if (m.count(key)) {
+            moveToFront(key);
+            m[key]->second = value;
+        } else {
+            data.emplace_front(key, value);
+            m[key] = data.begin();
+            if (data.size() > capacity) {
+                m.erase(data.back().first);
+                data.pop_back();
+            }
+        }
+    }
+};
