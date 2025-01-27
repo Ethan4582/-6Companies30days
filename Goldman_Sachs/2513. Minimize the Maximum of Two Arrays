@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int minimizeSet(int a, int b, int u1, int u2) {
+        long L = 0, R = INT_MAX, lcm = (long)a * b / gcd(a, b);
+        auto valid = [&](long x) {
+            long never = x / lcm;
+            return x - x / a - x / b + never >= max(0L, u1 - x / b + never) + max(0L, u2 - x / a + never);
+        };
+        while (L <= R) {
+            long M = (L + R) / 2;
+            if (valid(M)) R = M - 1;
+            else L = M + 1;
+        }
+        return L;
+    }
+};

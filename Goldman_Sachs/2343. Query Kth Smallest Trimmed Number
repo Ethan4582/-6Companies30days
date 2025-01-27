@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<int> smallestTrimmedNumbers(vector<string>& nums, vector<vector<int>>& quurr) {
+        vector<int> idxes(quurr.size(), 0);
+        iota(idxes.begin(), idxes.end(), 0);
+        sort(idxes.begin(), idxes.end(), [&](auto& i, auto& j) {
+            return quurr[i][1] < quurr[j][1];
+        });
+        
+        const int N = nums.size();
+        const int M = nums[0].size();
+        vector<int> ret(quurr.size(), 0);
+        vector<int> tmpIndice(N);
+        vector<int> numidx(N);
+        iota(numidx.begin(), numidx.end(), 0);
+
+        int qi = 0;
+        for (int i = M-1; i >= 0; --i) {
+            vector<int> cnt(10, 0);
+            for (int j = 0; j < N; ++j) {
+                ++cnt[nums[numidx[j]][i] - '0'];
+            }
+            
+            for (int j = 1; j < 10; ++j) {
+                cnt[j] += cnt[j-1];
+            }
+            
+            for (int j = N-1; j >= 0; --j) {
+                tmpIndice[cnt[nums[numidx[j]][i] - '0'] - 1] = numidx[j];
+                --cnt[nums[numidx[j]][i] - '0'];
+            }
+            numidx.swap(tmpIndice);
+            
+            auto trim = M - i;
+            while (qi < idxes.size() && quurr[idxes[qi]][1] == trim) {
+                ret[idxes[qi]] = numidx[quurr[idxes[qi]][0] - 1];
+                ++qi;
+            }
+            if (qi > idxes.size()) {
+                break;
+            }
+        }
+        
+        return ret;
+    }
+};

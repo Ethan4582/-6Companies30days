@@ -1,0 +1,17 @@
+class DataStream {
+public:
+    int k, val, res;
+    DataStream(int value, int K) {
+        val=value;
+        k=K;
+        res=0;
+    }
+    
+    bool consec(int num) {
+        if(num==val) res++;
+        else res=0;
+
+        if(res>=k) return true;
+        return false;
+    }
+};

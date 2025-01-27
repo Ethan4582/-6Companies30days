@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        vector<int> tmp;
+        function<void(int, int)> dfs = [&](int i, int n) {
+            if (tmp.size() == k) {
+                if (n == 0) ans.push_back(tmp);
+                return;
+            }
+            if (i > 9) return;
+            dfs(i + 1, n); // skip i
+            tmp.push_back(i);
+            dfs(i + 1, n - i); // use i
+            tmp.pop_back();
+        };
+        dfs(1, n);
+        return ans;
+    }
+};

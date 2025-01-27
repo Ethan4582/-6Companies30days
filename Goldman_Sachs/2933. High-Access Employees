@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<string> findHighAccessEmployees(vector<vector<string>>& A) {
+        unordered_map<string, vector<int>> m;
+        auto time = [&](string &s) {
+            return stoi(s.substr(0, 2)) * 60 + stoi(s.substr(2));
+        };
+        for (auto &v : A) m[v[0]].push_back(time(v[1]));
+        vector<string> ans;
+        for (auto &[n, v] : m) {
+            sort(begin(v), end(v));
+            int i = 0, j = 0;
+            for (; j < v.size(); ++j) {
+                while (i < j && v[j] - v[i] >= 60) ++i;
+                if (j - i >= 2) {
+                    ans.push_back(n);
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};
