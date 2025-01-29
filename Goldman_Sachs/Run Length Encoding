@@ -1,0 +1,28 @@
+class Solution {
+  public:
+    string encode(string s) {
+        // code here
+        int i =0,j =1;
+        int n = s.size();
+        string st="";
+       int cnt =1;
+        while(j<n)
+        {
+            if(s[i]==s[j])
+            {
+                cnt++;
+                j++;
+            }
+            else
+            {
+                st+=s[i] + to_string(cnt);
+                i=j;
+                j++;
+                cnt =1;
+            }
+            
+        }
+        st+=s[n-1]+to_string(cnt);
+    return st;
+    }
+};

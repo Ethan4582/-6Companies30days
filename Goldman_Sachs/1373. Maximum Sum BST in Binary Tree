@@ -1,0 +1,38 @@
+struct info{
+    int min,max ,ans ,sum;
+    bool isBST;
+
+    info(){
+        min=INT_MAX, max=INT_MIN, ans=0, sum=0;
+        isBST=true;
+    }
+};
+class Solution {
+private:
+    info helper(TreeNode* root){
+        if(root==NULL) return info();
+
+        info l=helper(root->left);
+        info r=helper(root->right);
+
+        info ret;
+        ret.sum=l.sum+r.sum+root->val;
+        if(l.isBST && r.isBST && root->val > l.max && root->val < r.min ){
+            ret.max=max(root->val,r.max);
+            ret.min=min(root->val, l.min);
+
+            ret.ans=max(0,max(ret.sum,max(l.ans,r.ans)));
+            ret.isBST=true;
+            return ret;
+        }
+        ret.ans=max(l.ans,r.ans);
+        ret.ans=max(0,ret.ans);
+        ret.isBST=false;
+        return ret;
+
+    }
+public:
+    int maxSumBST(TreeNode* root) {
+        return helper(root).ans;
+    }
+};

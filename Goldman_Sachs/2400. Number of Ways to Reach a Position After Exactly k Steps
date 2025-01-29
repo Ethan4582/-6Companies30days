@@ -1,0 +1,20 @@
+class Solution {
+public:
+   
+    int numberOfWays(int stpos, int enps, int k) {
+        if(enps-stpos>k) return 0;
+        if(enps-stpos==k) return 1;
+        int mod=1e9+7;
+        vector<vector<long long>>dp(k+1,vector<long long>(2*k+1,0));
+        dp[0][k]=1;
+        for(int r=1;r<k+1;r++){
+            for(int c=0;c<2*k+1;c++){
+                
+                if(c==0) dp[r][c]=dp[r-1][c+1]; // c=0
+                else if(c==2*k) dp[r][c]=dp[r-1][c-1]; // c=2*k
+                else dp[r][c]=(dp[r-1][c-1]+dp[r-1][c+1])%mod;
+            }
+        }  return dp[k][enps-stpos+k];
+
+    }
+};
